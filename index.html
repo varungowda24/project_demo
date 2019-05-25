@@ -28,50 +28,39 @@
             navigator.serviceWorker.register('sw.js').then(function (registration) {
                 // Registration was successful
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                initializeUI();
             }, function (err) {
                 // registration failed :(
                 console.log('ServiceWorker registration failed: ', err);
             });
         });
-    } 
-
-
-    function displayNotification() {
-      if (Notification.permission == 'granted') {
-        console.log('Permission Granted');
-
-        navigator.serviceWorker.getRegistration().then(function (reg) {
-          const title = 'Badge Notification';
-          const options = {
-            actions: [
-              {
-                action: 'coffee-action',
-                title: 'Coffee',
-                icon: 'assets/images/carpenter.png'
-              },
-              {
-                action: 'doughnut-action',
-                title: 'Doughnut',
-                icon: 'assets/images/carpenter.png'
-              },
-              {
-                action: 'gramophone-action',
-                title: 'gramophone',
-                icon: 'assets/images/carpenter.png'
-              },
-              {
-                action: 'atom-action',
-                title: 'Atom',
-                icon: 'assets/images/carpenter.png'
-              }
-            ]
-          };
-          reg.showNotification(title, options);
-        });
-      } else {
-        console.log('permission Denied');
-      }
     }
-    displayNotification();
+
+
+    function initializeUI() {
+        // Set the initial subscription value
+        swRegistration.pushManager.getSubscription()
+            .then(function (subscription) {
+                isSubscribed = !(subscription === null);
+
+                if (isSubscribed) {
+                    console.log('User IS subscribed.');
+                } else {
+                    console.log('User is NOT subscribed.');
+                }
+
+                updateBtn();
+            });
+    }
+
+    function updateBtn() {
+        if (isSubscribed) {
+            pushButton.textContent = 'Disable Push Messaging';
+        } else {
+            pushButton.textContent = 'Enable Push Messaging';
+        }
+
+        pushButton.disabled = false;
+    }
 
 </script>

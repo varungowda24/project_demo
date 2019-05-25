@@ -1,5 +1,8 @@
 self.addEventListener('fetch', function(event) {});
 
+
+
+
 // importScripts('cache-pollyfill.js');
 
 // self.addEventListener('install', function (e) {
