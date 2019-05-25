@@ -31,6 +31,7 @@
 
 <script>
 const pushButton = document.querySelector('.js-push-btn');
+
     function updateSubscriptionOnServer(subscription) {
         // TODO: Send subscription to application server
 
@@ -95,7 +96,7 @@ const pushButton = document.querySelector('.js-push-btn');
     }
     
     function subscribeUser() {
-        const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+        // const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
         swRegistration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: 'lyHQ2HkDmpCwyjGqzJ0BBmr0HHHFo6bbLa6U4Cc6hQI'
