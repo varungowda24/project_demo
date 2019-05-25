@@ -1,21 +1,21 @@
 /*
-*
-*  Push Notifications codelab
-*  Copyright 2015 Google Inc. All rights reserved.
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      https://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License
-*
-*/
+ *
+ *  Push Notifications codelab
+ *  Copyright 2015 Google Inc. All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License
+ *
+ */
 
 /* eslint-env browser, es6 */
 
@@ -78,26 +78,26 @@ function updateSubscriptionOnServer(subscription) {
 function subscribeUser() {
   const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
   swRegistration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: applicationServerKey
-  })
-  .then(function(subscription) {
-    console.log('User is subscribed');
+      userVisibleOnly: true,
+      applicationServerKey: applicationServerKey
+    })
+    .then(function (subscription) {
+      console.log('User is subscribed');
 
-    updateSubscriptionOnServer(subscription);
+      updateSubscriptionOnServer(subscription);
 
-    isSubscribed = true;
+      isSubscribed = true;
 
-    updateBtn();
-  })
-  .catch(function(err) {
-    console.log('Failed to subscribe the user: ', err);
-    updateBtn();
-  });
+      updateBtn();
+    })
+    .catch(function (err) {
+      console.log('Failed to subscribe the user: ', err);
+      updateBtn();
+    });
 }
 
 function initializeUI() {
-  pushButton.addEventListener('click', function() {
+  pushButton.addEventListener('click', function () {
     pushButton.disabled = true;
     if (isSubscribed) {
       // TODO: Unsubscribe user
@@ -108,35 +108,51 @@ function initializeUI() {
 
   // Set the initial subscription value
   swRegistration.pushManager.getSubscription()
-  .then(function(subscription) {
-    isSubscribed = !(subscription === null);
+    .then(function (subscription) {
+      isSubscribed = !(subscription === null);
 
-    updateSubscriptionOnServer(subscription);
+      updateSubscriptionOnServer(subscription);
 
-    if (isSubscribed) {
-      console.log('User IS subscribed.');
-    } else {
-      console.log('User is NOT subscribed.');
-    }
+      if (isSubscribed) {
+        console.log('User IS subscribed.');
+      } else {
+        console.log('User is NOT subscribed.');
+      }
 
-    updateBtn();
-  });
+      updateBtn();
+    });
 }
 
 if ('serviceWorker' in navigator && 'PushManager' in window) {
   console.log('Service Worker and Push is supported');
 
   navigator.serviceWorker.register('sw.js')
-  .then(function(swReg) {
-    console.log('Service Worker is registered', swReg);
+    .then(function (swReg) {
+      console.log('Service Worker is registered', swReg);
 
-    swRegistration = swReg;
-    initializeUI();
-  })
-  .catch(function(error) {
-    console.error('Service Worker Error', error);
-  });
+      swRegistration = swReg;
+      initializeUI();
+    })
+    .catch(function (error) {
+      console.error('Service Worker Error', error);
+    });
 } else {
   console.warn('Push messaging is not supported');
   pushButton.textContent = 'Push Not Supported';
+}
+
+
+// Detects if device is on iOS 
+const isIos = () => {
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  return /iphone|ipad|ipod/.test(userAgent);
+}
+// Detects if device is in standalone mode
+const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+// Checks if should display install popup notification:
+if (isIos() && !isInStandaloneMode()) {
+  this.setState({
+    showInstallMessage: true
+  });
 }
