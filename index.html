@@ -80,30 +80,12 @@
                 updateBtn();
             });
     }
-    swRegistration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: 'lyHQ2HkDmpCwyjGqzJ0BBmr0HHHFo6bbLa6U4Cc6hQI'
-
-    })
-        .then(function (subscription) {
-            console.log('User is subscribed.');
-
-            updateSubscriptionOnServer(subscription);
-
-            isSubscribed = true;
-
-            updateBtn();
-
-        })
-        .catch(function (err) {
-            console.log('Failed to subscribe the user: ', err);
-            updateBtn();
-        });
+    
     function subscribeUser() {
         const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
         swRegistration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: applicationServerKey
+            applicationServerKey: 'lyHQ2HkDmpCwyjGqzJ0BBmr0HHHFo6bbLa6U4Cc6hQI'
         })
             .then(function (subscription) {
                 console.log('User is subscribed.');
